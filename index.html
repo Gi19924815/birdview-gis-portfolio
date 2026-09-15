@@ -138,10 +138,20 @@
   .hero.no-webgl .globe-fallback { display: grid; }
 
   .scroll-hint {
-    position: relative; z-index: 4; text-align: center; padding-bottom: 22px;
-    color: var(--muted); font-size: 13px;
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    z-index: 40; text-align: center; color: var(--muted); font-size: 13px;
+    pointer-events: none; transition: opacity .4s;
   }
-  .scroll-hint span { display: block; margin-bottom: 2px; }
+  .scroll-hint span { display: block; margin-bottom: 3px; }
+  .scroll-hint .arrow {
+    display: block; font-size: 18px; line-height: 1; color: var(--cyan);
+    animation: scroll-bounce 1.6s ease-in-out infinite;
+  }
+  .scroll-hint.faded { opacity: 0; }
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(7px); }
+  }
 
   /* ---------- 通用 section ---------- */
   section { padding: 90px 24px; position: relative; }
@@ -316,7 +326,7 @@
       </div>
     </div>
   </div>
-  <div class="scroll-hint"><span>向下滚动</span>⌄</div>
+  <div class="scroll-hint" id="scrollHint"><span>滑动向下</span><span class="arrow">⌄</span></div>
 </header>
 
 <main>
@@ -768,6 +778,13 @@ const SITE = {
   const menuBtn = document.getElementById('menuBtn');
   const navLinks = document.getElementById('navLinks');
   if (menuBtn) menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  const hint = document.getElementById('scrollHint');
+  if (hint) {
+    window.addEventListener('scroll', function () {
+      hint.classList.toggle('faded', window.scrollY > 60);
+    }, { passive: true });
+  }
 
   const io = new IntersectionObserver(entries => {
     entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
