@@ -493,6 +493,19 @@
   </div>
 </footer>
 
+<!-- 站内视频播放弹窗 -->
+<div class="video-modal" id="videoModal" aria-hidden="true">
+  <div class="video-modal-backdrop" id="videoBackdrop"></div>
+  <div class="video-modal-dialog">
+    <button class="video-modal-close" id="videoClose" aria-label="关闭">✕</button>
+    <div class="video-modal-title" id="videoTitle"></div>
+    <div class="video-frame">
+      <iframe id="videoIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <a class="video-modal-bili" id="videoBili" href="#" target="_blank" rel="noopener">在 B 站观看 →</a>
+  </div>
+</div>
+
 <script src="vendor/three.min.js"></script>
 <script>
 /* ============================================================
@@ -844,18 +857,5 @@ const SITE = {
   });
 })();
 </script>
-
-<!-- 站内视频播放弹窗 -->
-<div class="video-modal" id="videoModal" aria-hidden="true">
-  <div class="video-modal-backdrop" id="videoBackdrop"></div>
-  <div class="video-modal-dialog">
-    <button class="video-modal-close" id="videoClose" aria-label="关闭">✕</button>
-    <div class="video-modal-title" id="videoTitle"></div>
-    <div class="video-frame">
-      <iframe id="videoIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-    </div>
-    <a class="video-modal-bili" id="videoBili" href="#" target="_blank" rel="noopener">在 B 站观看 →</a>
-  </div>
-</div>
 </body>
 </html>
