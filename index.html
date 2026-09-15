@@ -153,6 +153,19 @@
     50% { transform: translateY(7px); }
   }
 
+  /* ---------- 站内视频播放弹窗 ---------- */
+  .video-modal { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .video-modal.open { display: flex; }
+  .video-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .video-modal-dialog { position: relative; width: min(920px, 100%); max-height: 90vh; display: flex; flex-direction: column; }
+  .video-modal-close { position: absolute; top: -42px; right: 0; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--card-border); background: rgba(0,0,0,.6); color: var(--text); font-size: 16px; cursor: pointer; z-index: 2; line-height: 1; }
+  .video-modal-close:hover { border-color: var(--cyan); color: var(--cyan); }
+  .video-modal-title { color: var(--text); font-weight: 700; font-size: 16px; margin-bottom: 12px; padding-right: 44px; }
+  .video-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 0 40px rgba(34,211,238,.25); }
+  .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .video-modal-bili { align-self: flex-start; margin-top: 12px; color: var(--cyan); font-size: 14px; }
+  .video-modal-bili:hover { text-decoration: underline; }
+
   /* ---------- 通用 section ---------- */
   section { padding: 90px 24px; position: relative; }
   .container { max-width: 1200px; margin: 0 auto; }
@@ -345,7 +358,7 @@
         <button class="filter-btn" data-filter="飞行模拟">飞行模拟 (1)</button>
       </div>
       <div class="works-grid" id="worksGrid">
-        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1P92YBEEne" target="_blank" rel="noopener" data-cat="地理线路轨迹">
+        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1P92YBEEne" target="_blank" rel="noopener" data-bvid="BV1P92YBEEne" data-title="赛事线路动画案例（洱海生态走廊）" data-cat="地理线路轨迹">
           <div class="work-cover">
             <img src="covers/work1.jpg" alt="赛事线路动画案例（洱海生态走廊）" loading="lazy">
             <span class="work-tag">地理线路轨迹</span>
@@ -356,7 +369,7 @@
             <p>三维地图还原洱海生态走廊赛事线路，轨迹动画全程演示。</p>
           </div>
         </a>
-        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1SDChYHEZy" target="_blank" rel="noopener" data-cat="高铁列车模拟">
+        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1SDChYHEZy" target="_blank" rel="noopener" data-bvid="BV1SDChYHEZy" data-title="南珠高铁南玉段12月底开通 三维模拟" data-cat="高铁列车模拟">
           <div class="work-cover">
             <img src="covers/work2.jpg" alt="南珠高铁南玉段12月底开通 三维模拟" loading="lazy">
             <span class="work-tag">高铁列车模拟</span>
@@ -367,7 +380,7 @@
             <p>南珠高铁南玉段全线三维模拟，还原真实开通运行视角。</p>
           </div>
         </a>
-        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1kB4y1k733" target="_blank" rel="noopener" data-cat="飞行模拟">
+        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1kB4y1k733" target="_blank" rel="noopener" data-bvid="BV1kB4y1k733" data-title="去迪拜要花多少钱？模拟从迪拜飞回北京" data-cat="飞行模拟">
           <div class="work-cover">
             <img src="covers/work3.jpg" alt="去迪拜要花多少钱？模拟从迪拜飞回北京" loading="lazy">
             <span class="work-tag">飞行模拟</span>
@@ -378,7 +391,7 @@
             <p>模拟迪拜飞北京航班，GIS 坐标 + 镜头畸变还原飞行视效。</p>
           </div>
         </a>
-        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1ir421T7av" target="_blank" rel="noopener" data-cat="地理线路轨迹">
+        <a class="work-card reveal" href="https://www.bilibili.com/video/BV1ir421T7av" target="_blank" rel="noopener" data-bvid="BV1ir421T7av" data-title="三维地图制作线路轨迹动画" data-cat="地理线路轨迹">
           <div class="work-cover">
             <img src="covers/work4.jpg" alt="三维地图制作线路轨迹动画" loading="lazy">
             <span class="work-tag">地理线路轨迹</span>
@@ -791,6 +804,58 @@ const SITE = {
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 })();
+
+/* ============================================================
+   站内视频播放弹窗
+   ============================================================ */
+(function videoModal() {
+  const modal = document.getElementById('videoModal');
+  const iframe = document.getElementById('videoIframe');
+  const titleEl = document.getElementById('videoTitle');
+  const biliLink = document.getElementById('videoBili');
+  const closeBtn = document.getElementById('videoClose');
+  const backdrop = document.getElementById('videoBackdrop');
+  if (!modal || !iframe) return;
+
+  document.querySelectorAll('.work-card[data-bvid]').forEach(card => {
+    card.addEventListener('click', function (e) {
+      e.preventDefault();
+      const bvid = card.dataset.bvid;
+      const title = card.dataset.title || '';
+      titleEl.textContent = title;
+      iframe.src = 'https://player.bilibili.com/player.html?bvid=' + bvid + '&page=1&high_quality=1&danmaku=0&autoplay=1';
+      biliLink.href = 'https://www.bilibili.com/video/' + bvid;
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function close() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    iframe.src = '';
+    document.body.style.overflow = '';
+  }
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+})();
 </script>
+
+<!-- 站内视频播放弹窗 -->
+<div class="video-modal" id="videoModal" aria-hidden="true">
+  <div class="video-modal-backdrop" id="videoBackdrop"></div>
+  <div class="video-modal-dialog">
+    <button class="video-modal-close" id="videoClose" aria-label="关闭">✕</button>
+    <div class="video-modal-title" id="videoTitle"></div>
+    <div class="video-frame">
+      <iframe id="videoIframe" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <a class="video-modal-bili" id="videoBili" href="#" target="_blank" rel="noopener">在 B 站观看 →</a>
+  </div>
+</div>
 </body>
 </html>
