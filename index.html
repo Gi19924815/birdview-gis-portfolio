@@ -633,10 +633,26 @@ const SITE = {
   }
   starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
   const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({
-    color: 0xffffff, size: 0.035, transparent: true, opacity: 0.9,
+    color: 0xffffff, size: 0.07, transparent: true, opacity: 0.95,
     blending: THREE.AdditiveBlending, depthWrite: false,
   }));
   scene.add(stars);
+
+  // 少量亮星（点缀）
+  const bgGeo = new THREE.BufferGeometry();
+  const bgPos = [];
+  for (let i = 0; i < 80; i++) {
+    const th = Math.random() * Math.PI * 2;
+    const ph = Math.acos(2 * Math.random() - 1);
+    const r = 12 + Math.random() * 35;
+    bgPos.push(r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th), r * Math.cos(ph));
+  }
+  bgGeo.setAttribute('position', new THREE.Float32BufferAttribute(bgPos, 3));
+  const brightStars = new THREE.Points(bgGeo, new THREE.PointsMaterial({
+    color: 0xbfe0ff, size: 0.16, transparent: true, opacity: 0.9,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  }));
+  scene.add(brightStars);
 
   // 响应式布局：桌面地球偏右，移动端居中偏上
   function layout() {
