@@ -6,3 +6,7 @@ backup/
 Thumbs.db
 
 .vercel
+
+_watch_test.txt
+_shot*.png
+_c.js
