@@ -1,33 +1,56 @@
 # 鸟瞰地图的图形基地 · 个人网站
 
-赛博朋克风格的静态单页网站，用于**作品展示 / 教程 / 插件展示·发布·出售**。
-纯 HTML + CSS + JS，无任何依赖，单文件即可上线。
+赛博朋克风格个人网站，用于**作品展示 / 教程 / 插件展示·发布·出售**。
+纯静态站点（HTML + CSS + JS），无构建步骤，直接部署。
 
-## 文件
-- `index.html` —— 全部页面（样式、脚本、头像均已内嵌，可直接打开/部署）
+## 线上地址
+- 🌐 生产站点：https://personal-site-chi-nine-18.vercel.app
+- 🐙 GitHub 仓库：https://github.com/Gi19924815/birdview-gis-portfolio
+- 🔧 Vercel 后台：https://vercel.com/gi19924815s-projects/personal-site
+
+> 已连接 GitHub，以后每次 `git push` 到 main 分支都会**自动重新部署**，无需手动操作。
+
+## 文件结构
+```
+index.html          页面主体（样式、脚本、地球纹理、头像均已内嵌）
+vendor/three.min.js 本地 three.js（旋转地球渲染，不依赖 CDN）
+covers/work1~4.jpg  4 个作品的 16:9 封面图
+README.md           本文件
+.gitignore
+```
 
 ## 本地预览
-双击 `index.html` 用浏览器打开即可。
+双击 `index.html` 用浏览器打开即可（地球、封面、脚本都能正常跑）。
 
-## 部署上线（任选其一）
+## 修改内容只需要改一个地方
+打开 `index.html`，找到开头的 `const SITE = { ... }`（约第 483 行）：
 
-### 方式 A：Vercel（推荐，免费 + 自动 HTTPS）
-1. 打开 https://vercel.com 用 GitHub / 邮箱登录。
-2. 点 **Add New → Project**，把本文件夹拖进去（或先推到 GitHub 再导入仓库）。
-3. 框架选 **Other / 无需配置**，直接 **Deploy**。
-4. 几分钟后得到 `xxx.vercel.app` 免费域名。
+```js
+const SITE = {
+  bilibili : "https://space.bilibili.com/405303397",
+  douyin   : "",   // 抖音主页链接
+  email    : "",   // 联系邮箱，如 mailto:you@example.com
+  afdian   : "",   // 爱发电主页，如 https://afdian.com/a/你的ID
+  mbd      : "",   // 或面包多 https://mbd.pub/o/你的ID
+};
+```
 
-### 方式 B：任意静态托管
-- GitHub Pages / Netlify / Cloudflare Pages：直接上传 `index.html` 即可。
-- 自有服务器：把 `index.html` 放到网站根目录。
+改完保存，`git push` 即自动上线。
 
-## 上线前你需要改的地方（搜索 TODO 或占位内容）
-| 位置 | 要改什么 |
-|---|---|
-| 「一键转换工具 Pro 版」卡片 | 价格 `¥29` 与真实购买/授权链接（爱发电 / 面包多 / Gumroad） |
-| 页脚「抖音」「联系我」 | 换成你的真实链接 / 邮箱 |
-| 百度网盘链接 | 目前指向你原来的 `12Ik7cscFRKOTWLsBe9ghBg`（提取码 6666），确认仍是有效资源 |
-| 作品卡封面 | 目前用 B 站 iframe 直接嵌入，可换成自制的 16:9 封面图 |
+## 付费通道（爱发电）开通步骤
+1. 打开 https://afdian.com 注册账号（微信/手机号都行）。
+2. 点右上角头像 →「创作者中心」，设置你的专属主页 ID（即 `https://afdian.com/a/你的ID` 里的 `你的ID`）。
+3. 在「商品 / 发电方案」里创建你要出售的插件商品（如「一键转换工具 Pro 版」，定价自定）。
+4. 把 `https://afdian.com/a/你的ID` 填到上面 `SITE.afdian` 里。
+5. 保存并 `git push` —— 首页「购买 Pro 版」和「去爱发电支持」两个按钮会自动指向你的主页。
 
-## 绑定正式域名（进阶）
-买好域名后，在 Vercel 项目 **Settings → Domains** 添加，然后到域名商改 DNS 解析（Vercel 有图文引导）。
+> 想用面包多（mbd.pub）同理，把链接填到 `SITE.mbd` 即可（付费按钮优先用爱发电）。
+
+## 部署方式（已配置，可复用）
+- 已通过 Vercel CLI 部署并连接 GitHub 仓库。
+- 若换新机器，重新登录即可：
+  ```bash
+  npm i -g vercel      # 安装 CLI
+  vercel login         # 浏览器授权
+  vercel --prod        # 在项目目录下部署
+  ```
