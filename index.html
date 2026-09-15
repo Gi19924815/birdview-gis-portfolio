@@ -86,20 +86,18 @@
   /* ---------- Hero ---------- */
   .hero {
     position: relative; min-height: 100vh; display: flex; flex-direction: column;
-    background:
-      radial-gradient(1200px 700px at 72% 22%, rgba(99,135,255,0.12), transparent 60%),
-      radial-gradient(900px 600px at 12% 82%, rgba(217,70,239,0.09), transparent 60%),
-      var(--bg);
+    background: var(--bg);
     overflow: hidden;
   }
-  .hero canvas#globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+  .hero canvas#plexus { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; display: block; }
+  .hero canvas#globe { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; display: block; }
   .hero-scrim {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
     background: linear-gradient(90deg, rgba(3,3,8,.93) 0%, rgba(3,3,8,.68) 32%, rgba(3,3,8,.18) 60%, transparent 76%);
   }
 
   .hero-inner {
-    position: relative; z-index: 3; flex: 1;
+    position: relative; z-index: 4; flex: 1;
     max-width: 1200px; margin: 0 auto; width: 100%;
     padding: 70px 44px 20px;
     display: flex; align-items: center;
@@ -141,7 +139,7 @@
   .hero.no-webgl .globe-fallback { display: grid; }
 
   .scroll-hint {
-    position: relative; z-index: 3; text-align: center; padding-bottom: 22px;
+    position: relative; z-index: 4; text-align: center; padding-bottom: 22px;
     color: var(--muted); font-size: 13px;
   }
   .scroll-hint span { display: block; margin-bottom: 2px; }
@@ -296,6 +294,7 @@
 </nav>
 
 <header class="hero" id="home">
+  <canvas id="plexus"></canvas>
   <canvas id="globe"></canvas>
   <div class="globe-fallback" aria-hidden="true"><div class="ball"></div></div>
   <div class="hero-scrim" aria-hidden="true"></div>
@@ -496,6 +495,78 @@ const SITE = {
 })();
 
 /* ============================================================
+   Plexus 粒子连线背景（AE Plexus 风格 · 鼠标互动）
+   ============================================================ */
+(function plexus() {
+  const canvas = document.getElementById('plexus');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W = 0, H = 0, pts = [];
+  const LINK = 130;
+  const mouse = { x: -9999, y: -9999, r: 170 };
+
+  function size() {
+    W = canvas.width = canvas.clientWidth || window.innerWidth;
+    H = canvas.height = canvas.clientHeight || window.innerHeight;
+    const n = Math.max(50, Math.min(110, Math.floor(W * H / 16000)));
+    pts = [];
+    for (let i = 0; i < n; i++) {
+      pts.push({
+        x: Math.random() * W, y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 1.4 + 0.5,
+      });
+    }
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of pts) {
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < mouse.r * mouse.r && d2 > 0.01) {
+        const d = Math.sqrt(d2);
+        const f = (mouse.r - d) / mouse.r * 0.9;
+        p.vx += dx / d * f; p.vy += dy / d * f;
+      }
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      const sp = Math.hypot(p.vx, p.vy);
+      if (sp > 1.0) { p.vx *= 1.0 / sp; p.vy *= 1.0 / sp; }
+    }
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const a = pts[i], b = pts[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < LINK * LINK) {
+          const alpha = (1 - Math.sqrt(d2) / LINK) * 0.32;
+          ctx.strokeStyle = 'rgba(80,150,255,' + alpha.toFixed(3) + ')';
+          ctx.lineWidth = 0.6;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of pts) {
+      ctx.fillStyle = 'rgba(130,195,255,0.75)';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('resize', size);
+  window.addEventListener('mousemove', function (e) {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  window.addEventListener('mouseout', function () { mouse.x = mouse.y = -9999; });
+  size();
+  tick();
+})();
+
+/* ============================================================
    旋转地球（three.js）— 全屏沉浸 · 昼夜 · 夜景灯光 · 鼠标跟随
    ============================================================ */
 (function globe() {
@@ -602,7 +673,7 @@ const SITE = {
         '  float f = 1.0 - abs(dot(normalize(vN), normalize(vV)));',
         '  f = pow(f, 1.9);',
         '  vec3 c = mix(vec3(0.10,0.40,1.0), vec3(0.55,0.92,1.0), f);',
-        '  gl_FragColor = vec4(c * f * 1.8, 1.0);',
+        '  gl_FragColor = vec4(c * f * 0.7, 1.0);',
         '}'
       ].join('\n'),
       blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
@@ -616,8 +687,8 @@ const SITE = {
       const c = document.createElement('canvas'); c.width = c.height = 256;
       const g = c.getContext('2d');
       const r = g.createRadialGradient(128, 128, 0, 128, 128, 128);
-      r.addColorStop(0, 'rgba(60,130,255,0.5)');
-      r.addColorStop(0.4, 'rgba(40,100,255,0.16)');
+      r.addColorStop(0, 'rgba(60,130,255,0.20)');
+      r.addColorStop(0.4, 'rgba(40,100,255,0.07)');
       r.addColorStop(1, 'rgba(0,0,0,0)');
       g.fillStyle = r; g.fillRect(0, 0, 256, 256);
       return new THREE.CanvasTexture(c);
