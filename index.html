@@ -186,17 +186,20 @@
   /* ---------- 关于 · 空间站 ---------- */
   .about-section {
     position: relative;
-    padding: 130px 24px;
+    padding: 110px 24px;
     overflow: hidden;
-    background: url("covers/astronaut.jpg") center/cover no-repeat;
   }
-  .about-overlay {
+  .about-bg {
     position: absolute; inset: 0; pointer-events: none;
     background:
-      linear-gradient(90deg, rgba(3,3,8,.95) 0%, rgba(3,3,8,.78) 40%, rgba(3,3,8,.4) 72%, rgba(3,3,8,.15) 100%),
-      linear-gradient(180deg, rgba(3,3,8,.7) 0%, rgba(3,3,8,0) 22%, rgba(3,3,8,0) 72%, rgba(3,3,8,.7) 100%);
+      radial-gradient(ellipse 70% 60% at 78% 42%, rgba(99,135,255,.16), transparent 62%),
+      radial-gradient(ellipse 55% 55% at 24% 82%, rgba(168,85,247,.12), transparent 60%);
   }
-  .about-inner { position: relative; z-index: 2; max-width: 640px; }
+  .about-inner {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between; gap: 48px;
+  }
+  .about-text { max-width: 600px; min-width: 0; }
   .about-title { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin-top: 10px; line-height: 1.25; }
   .about-title em { font-style: normal; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .about-sub { color: var(--muted); margin-top: 16px; font-size: 15px; max-width: 560px; }
@@ -207,6 +210,16 @@
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     border: 1px solid rgba(34,211,238,.4); background: rgba(34,211,238,.08);
+  }
+  .about-astro {
+    flex: none; width: min(400px, 36vw); max-height: 520px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 34px rgba(99,135,255,.38)) drop-shadow(0 0 12px rgba(34,211,238,.25));
+    animation: about-float 6s ease-in-out infinite;
+  }
+  @keyframes about-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-16px); }
   }
 
   /* ---------- 作品 ---------- */
@@ -332,6 +345,8 @@
     .nav-links.open { display: flex; }
     .menu-btn { display: block; }
     section { padding: 64px 18px; }
+    .about-inner { flex-direction: column; gap: 28px; }
+    .about-astro { width: min(260px, 62vw); max-height: 320px; order: -1; margin: 0 auto; }
   }
 </style>
 </head>
@@ -383,16 +398,19 @@
 <main>
   <!-- ============ 关于 · 空间站 ============ -->
   <section id="about" class="about-section">
-    <div class="about-overlay" aria-hidden="true"></div>
+    <div class="about-bg" aria-hidden="true"></div>
     <div class="container about-inner">
-      <div class="section-kicker reveal">About · 空间站</div>
-      <h2 class="about-title reveal">关于<em>鸟瞰地图空间站</em></h2>
-      <p class="about-sub reveal">这里是一个把世界装进地图、再让地图动起来的创作空间站。从三维线路轨迹到高铁与飞行模拟，从 AE 动效脚本到效率工具——我用空间可视化，重新讲好每一个地理故事。</p>
-      <div class="about-points reveal">
-        <div class="about-point"><span class="about-point-num">01</span><span>三维地图 · GIS 可视化作品</span></div>
-        <div class="about-point"><span class="about-point-num">02</span><span>AE 动效脚本 · 效率插件</span></div>
-        <div class="about-point"><span class="about-point-num">03</span><span>持续更新的实战教程</span></div>
+      <div class="about-text">
+        <div class="section-kicker reveal">About · 空间站</div>
+        <h2 class="about-title reveal">关于<em>鸟瞰地图空间站</em></h2>
+        <p class="about-sub reveal">这里是一个把世界装进地图、再让地图动起来的创作空间站。从三维线路轨迹到高铁与飞行模拟，从 AE 动效脚本到效率工具——我用空间可视化，重新讲好每一个地理故事。</p>
+        <div class="about-points reveal">
+          <div class="about-point"><span class="about-point-num">01</span><span>三维地图 · GIS 可视化作品</span></div>
+          <div class="about-point"><span class="about-point-num">02</span><span>AE 动效脚本 · 效率插件</span></div>
+          <div class="about-point"><span class="about-point-num">03</span><span>持续更新的实战教程</span></div>
+        </div>
       </div>
+      <img class="about-astro reveal" src="covers/astronaut-cutout.png" alt="宇航员在太空中漂浮" loading="lazy">
     </div>
   </section>
 
