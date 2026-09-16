@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>鸟瞰地图的图形基地 · 作品 / 教程 / 插件</title>
-<meta name="description" content="鸟瞰地图的图形基地 — 三维地图 / GIS 可视化 / AE 动效脚本 / 效率工具。作品展示、教程与插件下载。" />
+<title>鸟瞰地图空间站 · 作品 / 教程 / 插件</title>
+<meta name="description" content="鸟瞰地图空间站 — 三维地图 / GIS 可视化 / AE 动效脚本 / 效率工具。作品展示、教程与插件下载。" />
 <style>
   :root {
     --bg: #030308;
@@ -114,7 +114,15 @@
     background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
     position: relative; display: inline-block;
   }
-  .hero-title .hero-sub-brand { display: block; font-size: .62em; color: var(--text); font-weight: 600; margin-top: 4px; }
+  .hero-title .hero-sub-brand {
+    display: block; font-size: .6em; color: var(--text); font-weight: 600; margin-top: 6px;
+    letter-spacing: .3em;
+  }
+  .hero-title .hero-sub-brand::before,
+  .hero-title .hero-sub-brand::after {
+    content: ""; display: inline-block; width: 44px; height: 2px; border-radius: 2px;
+    background: var(--grad); opacity: .75; vertical-align: middle; margin: 0 12px;
+  }
   .hero-sub { margin-top: 18px; font-size: 16px; color: var(--muted); max-width: 520px; }
   .hero-cta { display: flex; gap: 14px; margin-top: 28px; flex-wrap: wrap; }
   .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 26px; border-radius: 999px;
@@ -328,7 +336,7 @@
       <span class="badge">🛰️ 三维地图 · GIS 可视化 · 动效与工具</span>
       <h1 class="hero-title">
         <span class="grad-text glitch" data-text="鸟瞰地图">鸟瞰地图</span>
-        <span class="hero-sub-brand">的图形基地</span>
+        <span class="hero-sub-brand">空间站</span>
       </h1>
       <p class="hero-sub">用三维地图与动效，重新定义你看世界的方式。<br>专注 GIS 空间可视化、AE 动效脚本与效率工具。</p>
       <div class="hero-cta">
