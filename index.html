@@ -315,6 +315,13 @@
     transition: transform .4s ease;
   }
   .tut-card:hover .course-cover img { transform: scale(1.06); }
+  .course-links { display: flex; align-items: center; gap: 12px; margin-top: 14px; flex-wrap: wrap; }
+  .course-links .tut-link { margin-top: 0; }
+  .course-links .tut-link.buy {
+    color: #fff; background: var(--grad); padding: 6px 14px; border-radius: 999px; font-weight: 600;
+    box-shadow: 0 0 14px rgba(99,135,255,.4); transition: .2s;
+  }
+  .course-links .tut-link.buy:hover { box-shadow: 0 0 22px rgba(99,135,255,.7); }
 
   /* ---------- 用户评价 ---------- */
   .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
@@ -598,27 +605,36 @@
         <p class="section-sub" style="margin-top:10px">三套三维地图付费课程，点击进入 B 站课堂观看。</p>
       </div>
       <div class="tuts-grid">
-        <a class="tut-card reveal" href="https://www.bilibili.com/cheese/play/ss25994" target="_blank" rel="noopener">
+        <div class="tut-card reveal">
           <div class="course-cover"><img src="covers/course-flight.jpg" alt="飞行模拟课程" loading="lazy"></div>
           <div class="tut-num">课程 01</div>
           <h3>三维地图制作 · 飞行模拟</h3>
           <p>飞行模拟完整付费课程，B 站课堂在线观看。</p>
-          <span class="tut-link">去 B 站观看 →</span>
-        </a>
-        <a class="tut-card reveal" href="https://www.bilibili.com/cheese/play/ss27796" target="_blank" rel="noopener">
+          <div class="course-links">
+            <a class="tut-link" href="https://www.bilibili.com/cheese/play/ss25994" target="_blank" rel="noopener">去 B 站观看 →</a>
+            <a class="tut-link buy" href="https://afdian.com/item/beb072a6b31711f192e35254001e7c00" target="_blank" rel="noopener">购买资料 ¥9.90</a>
+          </div>
+        </div>
+        <div class="tut-card reveal">
           <div class="course-cover"><img src="covers/course-train.jpg" alt="高铁模拟课程" loading="lazy"></div>
           <div class="tut-num">课程 02</div>
           <h3>三维地图制作 · 高铁模拟篇</h3>
           <p>高铁模拟完整付费课程，B 站课堂在线观看。</p>
-          <span class="tut-link">去 B 站观看 →</span>
-        </a>
-        <a class="tut-card reveal" href="https://www.bilibili.com/cheese/play/ss25987" target="_blank" rel="noopener">
+          <div class="course-links">
+            <a class="tut-link" href="https://www.bilibili.com/cheese/play/ss27796" target="_blank" rel="noopener">去 B 站观看 →</a>
+            <a class="tut-link buy" href="https://afdian.com/item/dccde4eeb31711f1849452540025c377" target="_blank" rel="noopener">购买资料 ¥9.90</a>
+          </div>
+        </div>
+        <div class="tut-card reveal">
           <div class="course-cover"><img src="covers/course-route.jpg" alt="地理线路轨迹动画课程" loading="lazy"></div>
           <div class="tut-num">课程 03</div>
           <h3>三维地图制作 · 地理线路轨迹动画</h3>
           <p>地理线路轨迹动画完整付费课程，B 站课堂在线观看。</p>
-          <span class="tut-link">去 B 站观看 →</span>
-        </a>
+          <div class="course-links">
+            <a class="tut-link" href="https://www.bilibili.com/cheese/play/ss25987" target="_blank" rel="noopener">去 B 站观看 →</a>
+            <a class="tut-link buy" href="https://afdian.com/item/bb68d6e8b31611f1b5755254001e7c00" target="_blank" rel="noopener">购买资料 ¥9.90</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
