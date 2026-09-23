@@ -322,6 +322,9 @@
     transition: transform .4s ease;
   }
   .tut-card:hover .course-cover img { transform: scale(1.06); }
+  .tut-cover { position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 12px; margin-bottom: 14px; background: #0a0d18; }
+  .tut-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .tut-card:hover .tut-cover img { transform: scale(1.06); }
 
   /* ---------- 用户评价 ---------- */
   .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
@@ -604,22 +607,43 @@
         <h2 class="section-title">教程<em>·资源</em></h2>
         <p class="section-sub">从脚本使用到三维地图制作，把踩过的坑和技巧都整理成教程给你。</p>
       </div>
+      <!-- 原创一键生成工具使用方法 -->
+      <div class="section-subhead reveal">
+        <div class="section-kicker">Tool Tutorials</div>
+        <h3 class="course-heading">原创一键生成工具<em>使用方法</em></h3>
+        <p class="section-sub" style="margin-top:10px">5 集实操教程 · 点击卡片直接在站内播放</p>
+      </div>
       <div class="tuts-grid">
-        <div class="tut-card reveal">
-          <div class="tut-num">01 / 手册</div>
-          <h3>AE 脚本使用手册（中文 PDF）</h3>
-          <p>坐标缩放脚本的完整图文说明，随脚本一并打包下载。</p>
-        </div>
-        <div class="tut-card reveal">
-          <div class="tut-num">02 / 视频</div>
-          <h3>三维地图制作教程合集</h3>
-          <p>线路轨迹、地形烘焙、镜头动画……在 B 站持续更新中。</p>
-        </div>
-        <div class="tut-card reveal">
-          <div class="tut-num">03 / 素材</div>
-          <h3>资源素材库</h3>
-          <p>科技感背景、贴图与工程文件，网盘不定时上新。</p>
-        </div>
+        <a class="tut-card reveal" href="https://www.bilibili.com/video/BV1gMj16pEUh" target="_blank" rel="noopener" data-bvid="BV1gMj16pEUh" data-title="第一节 三维地图动画线路轨迹一键生成 使用方法">
+          <div class="tut-cover"><img src="covers/tut1.jpg" alt="第一节 三维地图动画线路轨迹一键生成 使用方法" loading="lazy"></div>
+          <div class="tut-num">教程 01 · 18:52</div>
+          <h3>第一节 三维地图动画线路轨迹一键生成 使用方法</h3>
+          <span class="tut-link">点击站内播放 →</span>
+        </a>
+        <a class="tut-card reveal" href="https://www.bilibili.com/video/BV18Q7h6SELq" target="_blank" rel="noopener" data-bvid="BV18Q7h6SELq" data-title="第二节 高铁线路轨迹动画教程一键生成 使用方法">
+          <div class="tut-cover"><img src="covers/tut2.jpg" alt="第二节 高铁线路轨迹动画教程一键生成 使用方法" loading="lazy"></div>
+          <div class="tut-num">教程 02 · 15:35</div>
+          <h3>第二节 高铁线路轨迹动画教程一键生成 使用方法</h3>
+          <span class="tut-link">点击站内播放 →</span>
+        </a>
+        <a class="tut-card reveal" href="https://www.bilibili.com/video/BV1LPjS6rE29" target="_blank" rel="noopener" data-bvid="BV1LPjS6rE29" data-title="单线路动画转换教程">
+          <div class="tut-cover"><img src="covers/tut3.jpg" alt="单线路动画转换教程" loading="lazy"></div>
+          <div class="tut-num">教程 03 · 0:16</div>
+          <h3>单线路动画转换教程</h3>
+          <span class="tut-link">点击站内播放 →</span>
+        </a>
+        <a class="tut-card reveal" href="https://www.bilibili.com/video/BV1paVJ6FE6P" target="_blank" rel="noopener" data-bvid="BV1paVJ6FE6P" data-title="一键转换线路、高铁线路轨迹动画">
+          <div class="tut-cover"><img src="covers/tut4.jpg" alt="一键转换线路、高铁线路轨迹动画" loading="lazy"></div>
+          <div class="tut-num">教程 04 · 0:46</div>
+          <h3>一键转换线路、高铁线路轨迹动画</h3>
+          <span class="tut-link">点击站内播放 →</span>
+        </a>
+        <a class="tut-card reveal" href="https://www.bilibili.com/video/BV175Gh67Eiq" target="_blank" rel="noopener" data-bvid="BV175Gh67Eiq" data-title="全网首发 三维地图实现线路动画一键生成">
+          <div class="tut-cover"><img src="covers/tut5.jpg" alt="全网首发 三维地图实现线路动画一键生成" loading="lazy"></div>
+          <div class="tut-num">教程 05 · 2:20</div>
+          <h3>全网首发 三维地图实现线路动画一键生成</h3>
+          <span class="tut-link">点击站内播放 →</span>
+        </a>
       </div>
 
       <!-- 付费课程 -->
@@ -1076,7 +1100,7 @@ const SITE = {
   const backdrop = document.getElementById('videoBackdrop');
   if (!modal || !iframe) return;
 
-  document.querySelectorAll('.work-card[data-bvid]').forEach(card => {
+  document.querySelectorAll('[data-bvid]').forEach(card => {
     card.addEventListener('click', function (e) {
       e.preventDefault();
       const bvid = card.dataset.bvid;
